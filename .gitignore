@@ -1,0 +1,4 @@
+# Compiled binaries
+out
+*.out
+*.o
