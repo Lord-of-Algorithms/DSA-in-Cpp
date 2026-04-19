@@ -11,7 +11,7 @@ namespace graph {
 
 /**
  * Implements PrimGraph using an adjacency matrix.
- * Edges are stored symmetrically so the graph is treated as undirected.
+ * WeightedEdges are stored symmetrically so the graph is treated as undirected.
  */
 class PrimMatrixGraph : public PrimGraph {
 public:
@@ -60,9 +60,9 @@ public:
     /**
      * Returns all edges from the given source by scanning its matrix row.
      */
-    std::vector<Edge> get_edges_for_source(const Vertex& source) const override {
+    std::vector<WeightedEdge> get_edges_for_source(const Vertex& source) const override {
         int s = index_map_.at(source);
-        std::vector<Edge> edges;
+        std::vector<WeightedEdge> edges;
         for (int i = 0; i < current_count_; ++i) {
             if (matrix_[s][i] != NO_EDGE) {
                 edges.emplace_back(source, vertices_[i], matrix_[s][i]);

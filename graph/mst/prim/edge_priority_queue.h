@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "../../edge.h"
+#include "../../weighted_edge.h"
 #include "../../vertex.h"
 
 namespace graph {
@@ -37,7 +37,7 @@ public:
      * Adds an edge in a position that maintains descending weight order.
      * Performed in O(n) time.
      */
-    void add(const Edge& edge) {
+    void add(const WeightedEdge& edge) {
         if (is_full()) throw std::overflow_error("Queue is full.");
         // Find first position whose weight is <= new edge weight and insert before it,
         // keeping the vector in descending order (smallest weight at back).
@@ -50,7 +50,7 @@ public:
      * Retrieves, but does not remove, the smallest weight edge.
      * Returns nullopt if the queue is empty.
      */
-    std::optional<Edge> peek_smallest() const {
+    std::optional<WeightedEdge> peek_smallest() const {
         if (is_empty()) return std::nullopt;
         return entries_.back();
     }
@@ -58,9 +58,9 @@ public:
     /**
      * Retrieves and removes the smallest weight edge.
      */
-    Edge poll_smallest() {
+    WeightedEdge poll_smallest() {
         if (is_empty()) throw std::underflow_error("Queue is empty.");
-        Edge e = entries_.back();
+        WeightedEdge e = entries_.back();
         entries_.pop_back();
         return e;
     }
@@ -70,9 +70,9 @@ public:
      * The target edge is identified by its destination vertex.
      * Performed in O(n) time.
      */
-    void replace(const Edge& target, const Edge& replacement) {
+    void replace(const WeightedEdge& target, const WeightedEdge& replacement) {
         auto it = std::find_if(entries_.begin(), entries_.end(),
-            [&](const Edge& e) { return e.destination() == target.destination(); });
+            [&](const WeightedEdge& e) { return e.destination() == target.destination(); });
         if (it == entries_.end()) {
             throw std::runtime_error("Target edge not found in queue.");
         }
@@ -85,7 +85,7 @@ public:
      * Returns nullopt if no such edge exists.
      * Performed in O(n) time.
      */
-    std::optional<Edge> find_edge_with_destination(const Vertex& destination) const {
+    std::optional<WeightedEdge> find_edge_with_destination(const Vertex& destination) const {
         for (const auto& e : entries_) {
             if (e.destination() == destination) return e;
         }
@@ -93,7 +93,7 @@ public:
     }
 
 private:
-    std::vector<Edge> entries_;
+    std::vector<WeightedEdge> entries_;
     int max_size_;
 };
 

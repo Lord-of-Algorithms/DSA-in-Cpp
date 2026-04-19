@@ -17,7 +17,7 @@
 #include <vector>
 
 #include "../../vertex.h"
-#include "../../edge.h"
+#include "../../weighted_edge.h"
 #include "union_find.h"
 
 using namespace graph;
@@ -25,8 +25,13 @@ using namespace graph;
 /**
  * Constructs the minimum spanning tree (MST) for a graph represented by vertices and edges.
  * Assumes that the graph is connected.
+ *
+ * Edge direction is ignored — only the two connected vertices and the weight matter. The
+ * Union-Find structure treats each edge as undirected: union(u, v) and union(v, u) produce
+ * the same result.
  */
-static std::vector<Edge> build_mst(const std::vector<Vertex>& vertices, std::vector<Edge> edges) {
+static std::vector<WeightedEdge> build_mst(const std::vector<Vertex>& vertices,
+                                            std::vector<WeightedEdge>  edges) {
     if (vertices.empty()) {
         throw std::invalid_argument("Vertex list cannot be empty.");
     }
@@ -34,16 +39,16 @@ static std::vector<Edge> build_mst(const std::vector<Vertex>& vertices, std::vec
         throw std::invalid_argument("Edge list cannot be empty.");
     }
 
-    std::vector<Edge> mst;
+    std::vector<WeightedEdge> mst;
 
     // Sort edges by weight in ascending order
-    std::sort(edges.begin(), edges.end(), [](const Edge& a, const Edge& b) {
+    std::sort(edges.begin(), edges.end(), [](const WeightedEdge& a, const WeightedEdge& b) {
         return a.weight() < b.weight();
     });
 
     UnionFind uf(vertices);
 
-    for (const Edge& edge : edges) {
+    for (const WeightedEdge& edge : edges) {
         if (uf.find(edge.source()) != uf.find(edge.destination())) {
             mst.push_back(edge);
             uf.union_sets(edge.source(), edge.destination());
@@ -56,7 +61,7 @@ static std::vector<Edge> build_mst(const std::vector<Vertex>& vertices, std::vec
     return mst;
 }
 
-static void print_mst(const std::vector<Edge>& mst) {
+static void print_mst(const std::vector<WeightedEdge>& mst) {
     std::cout << "MST: [";
     for (size_t i = 0; i < mst.size(); ++i) {
         std::cout << mst[i];
@@ -70,7 +75,7 @@ int main() {
 
     std::vector<Vertex> vertices = {a, b, c, d};
 
-    std::vector<Edge> edges = {
+    std::vector<WeightedEdge> edges = {
         {a, b, 1},
         {d, b, 2},
         {b, c, 3},
@@ -78,7 +83,7 @@ int main() {
         {d, c, 5},
     };
 
-    std::vector<Edge> mst = build_mst(vertices, edges);
+    std::vector<WeightedEdge> mst = build_mst(vertices, edges);
     print_mst(mst);
 
     return 0;

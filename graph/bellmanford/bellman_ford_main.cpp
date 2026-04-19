@@ -21,7 +21,7 @@
 #include <vector>
 
 #include "../vertex.h"
-#include "../edge.h"
+#include "../weighted_edge.h"
 
 using namespace graph;
 
@@ -55,9 +55,9 @@ struct BellmanFordResult {
  * @param source    The starting vertex.
  * @return A BellmanFordResult containing distances, predecessors, and a negative-cycle flag.
  */
-BellmanFordResult bellman_ford(const std::vector<Vertex>& vertices,
-                               const std::vector<Edge>&   edges,
-                               const Vertex&              source) {
+BellmanFordResult bellman_ford(const std::vector<Vertex>&       vertices,
+                               const std::vector<WeightedEdge>& edges,
+                               const Vertex&                    source) {
     std::unordered_map<Vertex, int>                   distances;
     std::unordered_map<Vertex, std::optional<Vertex>> predecessors;
 
@@ -157,7 +157,7 @@ void demonstrate_normal_graph() {
     Vertex a("A"), b("B"), c("C"), d("D"), e("E"), f("F");
     std::vector<Vertex> vertices = {a, b, c, d, e, f};
 
-    std::vector<Edge> edges = {
+    std::vector<WeightedEdge> edges = {
         {a, b,   5},
         {a, d,   2},
         {b, c,   5},
@@ -202,7 +202,7 @@ void demonstrate_negative_cycle_graph() {
     Vertex a("A"), b("B"), c("C"), d("D"), e("E"), f("F");
     std::vector<Vertex> vertices = {a, b, c, d, e, f};
 
-    std::vector<Edge> edges = {
+    std::vector<WeightedEdge> edges = {
         {a, b,   5},
         {a, d,   2},
         {b, c,   3},

@@ -11,7 +11,7 @@ namespace graph {
 
 /**
  * Implements PrimGraph using an adjacency list.
- * Edges are stored in both directions so the graph is treated as undirected.
+ * WeightedEdges are stored in both directions so the graph is treated as undirected.
  */
 class PrimListGraph : public PrimGraph {
 public:
@@ -21,7 +21,7 @@ public:
      * Adds a vertex to the graph. Initialises an empty edge list for it.
      */
     void add_vertex(const Vertex& vertex) override {
-        adjacency_list_.emplace(vertex, std::vector<Edge>{});
+        adjacency_list_.emplace(vertex, std::vector<WeightedEdge>{});
     }
 
     /**
@@ -40,7 +40,7 @@ public:
         replace_or_add(adjacency_list_.at(destination), destination, source,      weight);
     }
 
-    std::vector<Edge> get_edges_for_source(const Vertex& source) const override {
+    std::vector<WeightedEdge> get_edges_for_source(const Vertex& source) const override {
         return adjacency_list_.at(source);
     }
 
@@ -53,14 +53,14 @@ public:
     }
 
 private:
-    std::unordered_map<Vertex, std::vector<Edge>> adjacency_list_;
+    std::unordered_map<Vertex, std::vector<WeightedEdge>> adjacency_list_;
 
     /**
      * Replaces an existing edge between source and destination, or adds a new one.
      */
-    static void replace_or_add(std::vector<Edge>& edges,
+    static void replace_or_add(std::vector<WeightedEdge>& edges,
                                 const Vertex& source, const Vertex& destination, int weight) {
-        auto it = std::find_if(edges.begin(), edges.end(), [&](const Edge& e) {
+        auto it = std::find_if(edges.begin(), edges.end(), [&](const WeightedEdge& e) {
             return e.source() == source && e.destination() == destination;
         });
         if (it != edges.end()) edges.erase(it);

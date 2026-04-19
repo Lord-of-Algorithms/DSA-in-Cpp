@@ -21,7 +21,7 @@
 
 #include "../../../graph_representation.h"
 #include "../../../vertex.h"
-#include "../../../edge.h"
+#include "../../../weighted_edge.h"
 #include "../edge_priority_queue.h"
 #include "../graph/prim_graph.h"
 #include "graph_factory.h"
@@ -33,7 +33,7 @@ using namespace graph;
  * Implements Prim's algorithm: incrementally builds the MST by always selecting the
  * smallest-weight edge that connects the current tree to an unvisited vertex.
  */
-static std::vector<Edge> build_mst(PrimGraph& graph, const Vertex& start_vertex) {
+static std::vector<WeightedEdge> build_mst(PrimGraph& graph, const Vertex& start_vertex) {
     if (!graph.contains_vertex(start_vertex)) {
         throw std::invalid_argument("Start vertex is not part of the graph.");
     }
@@ -44,7 +44,7 @@ static std::vector<Edge> build_mst(PrimGraph& graph, const Vertex& start_vertex)
     }
 
     std::unordered_set<Vertex> in_tree;
-    std::vector<Edge> mst;
+    std::vector<WeightedEdge> mst;
     EdgePriorityQueue pqueue(vertex_count);
 
     Vertex current = start_vertex;
@@ -52,10 +52,10 @@ static std::vector<Edge> build_mst(PrimGraph& graph, const Vertex& start_vertex)
     while (static_cast<int>(in_tree.size()) < vertex_count - 1) {
         in_tree.insert(current);
 
-        for (const Edge& edge : graph.get_edges_for_source(current)) {
+        for (const WeightedEdge& edge : graph.get_edges_for_source(current)) {
             const Vertex& neighbour = edge.destination();
             if (!in_tree.count(neighbour)) {
-                std::optional<Edge> existing = pqueue.find_edge_with_destination(neighbour);
+                std::optional<WeightedEdge> existing = pqueue.find_edge_with_destination(neighbour);
                 if (existing.has_value()) {
                     if (existing->weight() > edge.weight()) {
                         pqueue.replace(*existing, edge);
@@ -70,7 +70,7 @@ static std::vector<Edge> build_mst(PrimGraph& graph, const Vertex& start_vertex)
             throw std::runtime_error("Graph is disconnected — MST cannot be completed.");
         }
 
-        Edge smallest = pqueue.poll_smallest();
+        WeightedEdge smallest = pqueue.poll_smallest();
         current = smallest.destination();
         mst.push_back(smallest);
     }
@@ -78,7 +78,7 @@ static std::vector<Edge> build_mst(PrimGraph& graph, const Vertex& start_vertex)
     return mst;
 }
 
-static void print_mst(const std::vector<Edge>& mst) {
+static void print_mst(const std::vector<WeightedEdge>& mst) {
     std::cout << "MST: [";
     for (size_t i = 0; i < mst.size(); ++i) {
         std::cout << mst[i];

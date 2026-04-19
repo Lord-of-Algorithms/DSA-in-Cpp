@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "../../../edge.h"
+#include "../../../weighted_edge.h"
 #include "../../../vertex.h"
 
 namespace graph {
@@ -27,7 +27,7 @@ public:
     /**
      * Returns all edges originating from the given vertex.
      */
-    virtual std::vector<Edge> get_edges_for_source(const Vertex& source) const = 0;
+    virtual std::vector<WeightedEdge> get_edges_for_source(const Vertex& source) const = 0;
 
     /**
      * Returns true if the vertex is present in the graph.
