@@ -74,9 +74,9 @@ public:
      */
     void delete_first() {
         if (is_empty()) throw std::runtime_error("The list is empty.");
-        Node* temp = head;
+        Node* cur = head;
         head       = head->next;
-        delete temp;
+        delete cur;
     }
 
     /**
@@ -87,20 +87,20 @@ public:
     void delete_by_value(char value) {
         if (is_empty()) throw std::runtime_error("The list is empty.");
         if (head->data == value) {
-            Node* temp = head;
+            Node* cur = head;
             head       = head->next;
-            delete temp;
+            delete cur;
             return;
         }
         Node* pred = head;
-        Node* temp = head->next;
-        while (temp != nullptr && temp->data != value) {
+        Node* cur = head->next;
+        while (cur != nullptr && cur->data != value) {
             pred = pred->next;
-            temp = temp->next;
+            cur = cur->next;
         }
-        if (temp != nullptr) {
-            pred->next = temp->next;
-            delete temp;
+        if (cur != nullptr) {
+            pred->next = cur->next;
+            delete cur;
         } else {
             throw std::runtime_error(
                 std::string("Value '") + value + "' not found in the list.");
@@ -120,12 +120,12 @@ public:
             return;
         }
         Node* pred = head;
-        Node* temp = head->next;
-        while (temp->next != nullptr) {
+        Node* cur = head->next;
+        while (cur->next != nullptr) {
             pred = pred->next;
-            temp = temp->next;
+            cur = cur->next;
         }
         pred->next = nullptr;
-        delete temp;
+        delete cur;
     }
 };
