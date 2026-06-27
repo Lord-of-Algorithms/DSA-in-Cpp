@@ -79,7 +79,7 @@ private:
     static constexpr int  kMinNodeKeyValue  = 0;
     static constexpr char kBlank            = ' ';
 
-    // Mutable static state (mirrors Java's static fields)
+    // Mutable static state
     inline static int max_node_key_value_      = 99;
     inline static int key_node_value_digits_   = 2;
 

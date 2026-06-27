@@ -43,7 +43,7 @@ public:
 
     int get_key() const override { return key; }
 
-    // Returns nullptr for sentinel children (matches Java's null check)
+    // Returns nullptr for sentinel children
     TreeNode* get_left() const override {
         return (left  && !left->is_sentinel_)  ? left  : nullptr;
     }

@@ -120,8 +120,8 @@ private:
             : key(std::move(k)), value(v) {}
 
         void print() const {
-            // Use enough precision to match Java's Double.toString() behaviour,
-            // which always shows the minimum digits needed to uniquely represent the value.
+            // Use enough precision to show the minimum digits needed to
+            // uniquely represent the value.
             std::cout << "->|" << key << ", "
                       << std::setprecision(10) << value
                       << std::setprecision(6)  // restore default

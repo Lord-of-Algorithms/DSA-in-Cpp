@@ -8,7 +8,7 @@
  * This implementation uses a custom EdgePriorityQueue (sorted vector) to always retrieve the
  * minimum-weight candidate edge in O(1), while insertion and replacement are O(n).
  * For large graphs a binary heap would give O(log n) insertion, but the sorted-vector approach
- * matches the Java reference implementation and keeps the code easy to follow.
+ * keeps the code simple and easy to follow.
  *
  * Time complexity: O(V^2) with this sorted-vector priority queue, where V is the number of vertices.
  */

@@ -7,9 +7,9 @@
  * confirmed chemical elements, an initial capacity of 150–200 would be
  * more appropriate to avoid unnecessary rehashing.
  *
- * Note: bucket placement will differ from the Java version because C++ and
- * Java use different string hash functions. The logical behaviour — which keys
- * are stored, retrieved, updated, and removed — is identical.
+ * Note: the exact bucket placement depends on the string hash function and is
+ * not significant. The logical behaviour — which keys are stored, retrieved,
+ * updated, and removed — is identical.
  */
 
 #include <iostream>
