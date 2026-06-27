@@ -8,7 +8,7 @@
  */
 class LinkedList {
 public:
-    Node* head = nullptr;  // Package-private in Java; public here for main access
+    Node* head = nullptr;
 
     ~LinkedList() {
         Node* current = head;

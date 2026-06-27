@@ -10,7 +10,7 @@
  */
 class DoubleEndedLinkedList {
 public:
-    Node* head = nullptr;  // Package-private in Java; public here for main access
+    Node* head = nullptr;
 
     ~DoubleEndedLinkedList() {
         Node* current = head;

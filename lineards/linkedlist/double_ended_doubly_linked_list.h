@@ -14,7 +14,7 @@
  */
 class DoubleEndedDoublyLinkedList {
 public:
-    DoublyNode* head = nullptr;  // Package-private in Java; public here for main access
+    DoublyNode* head = nullptr;
 
     ~DoubleEndedDoublyLinkedList() {
         DoublyNode* current = head;

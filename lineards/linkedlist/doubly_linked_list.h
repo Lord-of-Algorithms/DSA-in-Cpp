@@ -12,7 +12,7 @@
  */
 class DoublyLinkedList {
 public:
-    DoublyNode* head = nullptr;  // Package-private in Java; public here for main access
+    DoublyNode* head = nullptr;
 
     ~DoublyLinkedList() {
         DoublyNode* current = head;
