@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include "dijkstra_graph.h"
-#include "../../edge.h"
+#include "../../weighted_edge.h"
 
 namespace graph {
 
@@ -45,7 +45,7 @@ public:
         // Remove existing edge to the same destination, if any
         edges.erase(
             std::remove_if(edges.begin(), edges.end(),
-                [&](const Edge& e) { return e.destination() == destination; }),
+                [&](const WeightedEdge& e) { return e.destination() == destination; }),
             edges.end());
 
         edges.emplace_back(source, destination, weight);
@@ -77,7 +77,7 @@ public:
     }
 
 private:
-    std::unordered_map<Vertex, std::vector<Edge>> adjacency_list_;
+    std::unordered_map<Vertex, std::vector<WeightedEdge>> adjacency_list_;
     std::vector<Vertex>                           vertices_;
 };
 
