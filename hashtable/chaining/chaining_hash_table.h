@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include <functional>
-#include <iomanip>
 #include <iostream>
 #include <optional>
 #include <stdexcept>
@@ -13,16 +12,17 @@
 
 /**
  * A hash table implementation using chaining with linked lists to resolve collisions.
- * Supports inserting, retrieving, and removing string-keyed, double-valued pairs.
+ * Supports inserting, retrieving, and removing pairs that map names to phone
+ * numbers (both strings).
  *
  * The table resizes automatically when the load factor exceeds 0.75: the capacity
  * is doubled and rounded up to the next prime, then all entries are rehashed.
  * Two hash functions are available (Division and Multiplication) and are chosen
  * at construction time via HashFunctionType.
  */
-class HashTable {
+class ChainingHashTable {
 public:
-    HashTable(int capacity, HashFunctionType hash_function_type)
+    ChainingHashTable(int capacity, HashFunctionType hash_function_type)
         : size_(0), hash_function_type_(hash_function_type) {
         if (capacity < 1) {
             throw std::invalid_argument("Initial capacity must be >= 1.");
@@ -32,7 +32,7 @@ public:
         bucket_array_.assign(capacity, nullptr);
     }
 
-    ~HashTable() {
+    ~ChainingHashTable() {
         for (auto* bucket : bucket_array_) delete bucket;
     }
 
@@ -40,7 +40,7 @@ public:
      * Inserts or updates a key-value pair.
      * Triggers rehashing if adding the entry would exceed the load factor.
      */
-    void put(const std::string& key, double value) {
+    void put(const std::string& key, const std::string& value) {
         int index = hash(key);
         if (!bucket_array_[index]) {
             bucket_array_[index] = new HashTableBucket();
@@ -68,12 +68,12 @@ public:
     /**
      * Returns the value associated with the key, or nullopt if not found.
      */
-    std::optional<double> get(const std::string& key) const {
+    std::optional<std::string> get(const std::string& key) const {
         int index = hash(key);
         const HashTableBucket* bucket = bucket_array_[index];
         if (!bucket) return std::nullopt;
         const HashTableEntry* entry = bucket->find(key);
-        return entry ? std::optional<double>(entry->value) : std::nullopt;
+        return entry ? std::optional<std::string>(entry->value) : std::nullopt;
     }
 
     /**
@@ -104,7 +104,7 @@ public:
     }
 
 private:
-    // Knuth's multiplicative constant: (sqrt(5) - 1) / 2
+    // Constant for the Multiplication Method: A = (sqrt(5) - 1) / 2
     static constexpr double A = 0.6180339887498949;
     static constexpr double MAX_LOAD_FACTOR = 0.75;
 
@@ -113,19 +113,14 @@ private:
     // -------------------------------------------------------------------------
     struct HashTableEntry {
         std::string     key;
-        double          value;
+        std::string     value;
         HashTableEntry* next = nullptr;
 
-        HashTableEntry(std::string k, double v)
-            : key(std::move(k)), value(v) {}
+        HashTableEntry(std::string k, std::string v)
+            : key(std::move(k)), value(std::move(v)) {}
 
         void print() const {
-            // Use enough precision to show the minimum digits needed to
-            // uniquely represent the value.
-            std::cout << "->|" << key << ", "
-                      << std::setprecision(10) << value
-                      << std::setprecision(6)  // restore default
-                      << "|";
+            std::cout << "->|" << key << ", " << value << "|";
         }
     };
 
@@ -145,7 +140,7 @@ private:
         }
 
         // Inserts a new entry at the front of the list
-        void insert_at_beginning(const std::string& key, double value) {
+        void insert_at_beginning(const std::string& key, const std::string& value) {
             HashTableEntry* entry = new HashTableEntry(key, value);
             entry->next = head;
             head = entry;
