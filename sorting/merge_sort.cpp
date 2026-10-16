@@ -30,7 +30,7 @@ static void merge_both_parts(std::vector<int>& array, std::vector<int>& aux,
 
     // Merge elements and store in aux
     while (left <= mid && right <= end) {
-        if (array[left] < array[right]) {
+        if (array[left] <= array[right]) {
             aux[i++] = array[left++];
         } else {
             aux[i++] = array[right++];
